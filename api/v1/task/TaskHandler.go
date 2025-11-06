@@ -1,20 +1,42 @@
 package task
 
 import (
+	"net/http"
 	"task-tracker/internal/Task"
 
 	"github.com/gin-gonic/gin"
 )
 
-type TaskHandler struct {
-	service *Task.TaskService
+type Handler struct {
+	service Task.Service
 }
 
-func NewTaskHandler(service *Task.TaskService) *TaskHandler {
-	return &TaskHandler{service: service}
+func NewTaskHandler(service Task.Service) *Handler {
+	return &Handler{service: service}
 }
 
-func (h *TaskHandler) GetTasks(context *gin.Context) {
-	context.JSON(200, gin.H{"test": "test"})
-	//todo : not implemented
+func (h *Handler) GetTasks(context *gin.Context) {
+	tasks, err := h.service.GetAll()
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	context.JSON(http.StatusOK, tasks)
+}
+
+func (h *Handler) CreateTask(context *gin.Context) {
+	var task Task.Task
+	if err := context.ShouldBindJSON(&task); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	newTask, err := h.service.Create(task)
+	if err != nil {
+		//todo : give better errors
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusCreated, newTask)
 }

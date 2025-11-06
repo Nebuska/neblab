@@ -1,17 +1,32 @@
 package database
 
 import (
+	"context"
 	"log"
 	"task-tracker/config"
 
+	"go.uber.org/fx"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func NewMySql(cfg *config.Config) (*gorm.DB, error) {
+func NewMySql(lc fx.Lifecycle, cfg *config.Config) (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.Open(cfg.DatabaseConnectionString), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Error while connecting to database: " + err.Error())
 	}
+	if lc != nil {
+		lc.Append(fx.Hook{
+			/* if I decide to add operations before the program starts
+			OnStart: func(ctx context.Context) error {
+				return nil
+			},*/
+			OnStop: func(ctx context.Context) error {
+				sql, _ := db.DB()
+				return sql.Close()
+			},
+		})
+	}
+
 	return db, nil
 }

@@ -7,5 +7,5 @@ type Task struct {
 	Name        string
 	Description string
 	Status      string
-	BoardID     int
+	BoardID     uint
 }

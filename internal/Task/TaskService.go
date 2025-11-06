@@ -2,17 +2,30 @@ package Task
 
 import (
 	"errors"
+	"task-tracker/internal/common"
 )
 
-type TaskService struct {
-	repo *TaskRepository
+type Service interface {
+	common.CRUD[Task]
 }
 
-func NewTaskService(repo *TaskRepository) *TaskService {
-	return &TaskService{repo: repo}
+type taskService struct {
+	repo Repository
 }
 
-func (s *TaskService) Create(task Task) (Task, error) {
+func NewTaskService(repo Repository) Service {
+	return &taskService{repo: repo}
+}
+
+func (s *taskService) GetAll() ([]Task, error) {
+	return s.repo.GetAll()
+}
+
+func (s *taskService) GetByID(id uint) (Task, error) {
+	return s.repo.GetByID(id)
+}
+
+func (s *taskService) Create(task Task) (Task, error) {
 	if task.Name == "" {
 		return Task{}, errors.New("task name is required")
 	}
@@ -25,14 +38,14 @@ func (s *TaskService) Create(task Task) (Task, error) {
 	return s.repo.Create(task)
 }
 
-func (s *TaskService) Update(task Task) (Task, error) {
+func (s *taskService) Update(task Task) (Task, error) {
 	if task.ID == 0 {
 		return Task{}, errors.New("task id is required")
 	}
 	return s.repo.Update(task)
 }
 
-func (s *TaskService) Delete(task Task) error {
+func (s *taskService) Delete(task Task) error {
 	if task.ID == 0 {
 		return errors.New("task id is required")
 	}

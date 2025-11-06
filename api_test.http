@@ -10,5 +10,5 @@ Content-Type: application/json
 {
   "name": "{{$random.lorem.sentence}}",
   "description": "this is a test",
-  "board-id": 1
+  "boardid": 1
 }
