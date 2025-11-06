@@ -1,0 +1,10 @@
+package v1
+
+import (
+	"task-tracker/api/v1/task"
+
+	"go.uber.org/fx"
+)
+
+var Module = fx.Options(
+	task.Module)
