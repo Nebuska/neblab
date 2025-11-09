@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"task-tracker/config"
+	"task-tracker/internal/Auth"
 	"task-tracker/internal/Board"
 	"task-tracker/internal/BoardUser"
 	"task-tracker/internal/Task"
@@ -20,6 +21,7 @@ func main() {
 		log.Fatal("Error starting database connection " + err.Error())
 	}
 	err = db.AutoMigrate(
+		&Auth.UserCredentials{},
 		&User.User{},
 		&Board.Board{},
 		&Task.Task{},

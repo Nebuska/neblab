@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"task-tracker/internal/Auth"
 	"task-tracker/internal/Board"
 	"task-tracker/internal/Task"
 
@@ -10,4 +11,5 @@ import (
 var Module = fx.Options(
 	Task.Module,
 	Board.Module,
+	Auth.Module,
 )

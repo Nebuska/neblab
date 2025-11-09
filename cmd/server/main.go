@@ -9,6 +9,7 @@ import (
 	"task-tracker/config"
 	"task-tracker/internal"
 	"task-tracker/pkg/database"
+	"task-tracker/pkg/jwtAuth"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,7 @@ func main() {
 		fx.Provide(NewRouter),
 		config.Module,
 		database.Module,
+		jwtAuth.Module,
 		internal.Module,
 		api.Module,
 		fx.Invoke(func(lc fx.Lifecycle, r *gin.Engine, cfg *config.Config) {

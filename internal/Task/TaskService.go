@@ -2,11 +2,12 @@ package Task
 
 import (
 	"errors"
-	"task-tracker/internal/common"
 )
 
 type Service interface {
-	common.CRUD[Task]
+	CreateTaskUsingUser(userId uint, task Task) (Task, error)
+	GetTasksByBoardUsingUser(userId uint, boardId uint) ([]Task, error)
+	GetTaskByIdUsingUser(userID uint, taskId uint) (Task, error)
 }
 
 type taskService struct {
@@ -17,37 +18,47 @@ func NewTaskService(repo Repository) Service {
 	return &taskService{repo: repo}
 }
 
-func (s *taskService) GetAll() ([]Task, error) {
-	return s.repo.GetAll()
+func (s *taskService) CreateTaskUsingUser(userId uint, task Task) (Task, error) {
+	hasAccess, err := s.repo.UserHasAccessToBoard(userId, task.BoardID)
+	if err != nil {
+		return Task{}, err
+	}
+	if !hasAccess {
+		return Task{}, errors.New("user does not have access to task's board")
+	}
+	return s.repo.CreateTask(task)
 }
 
-func (s *taskService) GetByID(id uint) (Task, error) {
-	return s.repo.GetByID(id)
+func (s *taskService) GetTasksByBoardUsingUser(userId uint, boardId uint) ([]Task, error) {
+	hasAccess, err := s.repo.UserHasAccessToBoard(userId, boardId)
+	if err != nil {
+		return nil, err
+	}
+	if !hasAccess {
+		return nil, errors.New("user does not have access to task's board")
+	}
+
+	return s.repo.GetTasksByBoard(boardId)
+
 }
 
-func (s *taskService) Create(task Task) (Task, error) {
-	if task.Name == "" {
-		return Task{}, errors.New("task name is required")
-	}
-	if task.BoardID == 0 {
-		return Task{}, errors.New("task board id is required")
-	}
-	if task.Status == "" {
-		task.Status = "todo"
-	}
-	return s.repo.Create(task)
+func (s *taskService) GetTaskByIdUsingUser(userID uint, taskId uint) (Task, error) {
+	//TODO implement me
+	panic("implement me")
 }
 
-func (s *taskService) Update(task Task) (Task, error) {
-	if task.ID == 0 {
-		return Task{}, errors.New("task id is required")
-	}
-	return s.repo.Update(task)
+func (s *taskService) CreateTask(task Task) (Task, error) {
+	//TODO implement me
+	panic("implement me")
+
 }
 
-func (s *taskService) Delete(task Task) error {
-	if task.ID == 0 {
-		return errors.New("task id is required")
-	}
-	return s.repo.Delete(task)
+func (s *taskService) GetTasksByBoard(boardId uint) ([]Task, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (s *taskService) GetTaskById(taskId uint) (Task, error) {
+	//TODO implement me
+	panic("implement me")
 }
