@@ -1,14 +1,42 @@
 ### Get all tasks
-GET http://localhost:8080/api/v1/tasks
+GET http://localhost:8080/api/v1/tasks/fromBoard/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzcyI6IlRhc2tUcmFja2VyIiwiZXhwIjoxNzYyNzEzMjMyLCJpYXQiOjE3NjI3MDk2MzJ9.-iHyjRHjWi9njYRfTS93y_W7e1vPio-MO7ui1iBvriw
+Accept: application/json
+
+### Get task by id
+GET http://localhost:8080/api/v1/tasks/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzcyI6IlRhc2tUcmFja2VyIiwiZXhwIjoxNzYyNzEzMjMyLCJpYXQiOjE3NjI3MDk2MzJ9.-iHyjRHjWi9njYRfTS93y_W7e1vPio-MO7ui1iBvriw
 Accept: application/json
 
 
 ### Create new task
 POST http://localhost:8080/api/v1/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzcyI6IlRhc2tUcmFja2VyIiwiZXhwIjoxNzYyNzEzMjMyLCJpYXQiOjE3NjI3MDk2MzJ9.-iHyjRHjWi9njYRfTS93y_W7e1vPio-MO7ui1iBvriw
 Content-Type: application/json
 
 {
   "name": "{{$random.lorem.sentence}}",
   "description": "this is a test",
   "boardid": 1
+}
+
+
+### Create New User and Request JWT Token
+POST http://localhost:8080/api/v1/register
+Content-Type: application/json
+
+{
+  "username": "Nebuska",
+  "password": "12345678",
+  "email": "furkan.cebar@gmail.com"
+}
+
+
+###Request JWT Token
+POST http://localhost:8080/api/v1/login
+Content-Type: application/json
+
+{
+  "username": "Nebuska",
+  "password": "123456"
 }

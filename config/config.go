@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -12,6 +13,8 @@ type Config struct {
 	DatabaseConnectionString string
 	ServerPort               string
 	LatestApiVersion         string
+	JWTSecret                string
+	JWTExpire                time.Duration
 }
 
 func LoadConfig() (*Config, error) {
@@ -28,5 +31,7 @@ func LoadConfig() (*Config, error) {
 			"@tcp(127.0.0.1:3306)/" +
 			os.Getenv("DB_NAME") +
 			"?charset=utf8mb4&parseTime=True&loc=Local",
+		JWTSecret: "TEST123",
+		JWTExpire: time.Hour,
 	}, nil
 }

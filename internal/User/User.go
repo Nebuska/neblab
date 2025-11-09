@@ -9,9 +9,6 @@ import (
 type User struct {
 	gorm.Model
 
-	Username string `gorm:"unique;size:30;not null" validate:"required,min=3,max=30"`
-	Password string `gorm:"not null"`
-
 	FirstName string `gorm:"size:30" validate:"omitempty,min=3,max=30"`
 	LastName  string `gorm:"size:30" validate:"omitempty,min=3,max=30"`
 
