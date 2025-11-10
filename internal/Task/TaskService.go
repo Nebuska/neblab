@@ -42,9 +42,19 @@ func (s *taskService) GetTasksByBoardUsingUser(userId uint, boardId uint) ([]Tas
 
 }
 
-func (s *taskService) GetTaskByIdUsingUser(userID uint, taskId uint) (Task, error) {
-	//TODO implement me
-	panic("implement me")
+func (s *taskService) GetTaskByIdUsingUser(userId uint, taskId uint) (Task, error) {
+	task, err := s.repo.GetTaskById(taskId)
+	if err != nil {
+		return Task{}, err
+	}
+	hasAccess, err := s.repo.UserHasAccessToBoard(userId, task.BoardID)
+	if err != nil {
+		return Task{}, err
+	}
+	if !hasAccess {
+		return Task{}, errors.New("user does not have access to task's board")
+	}
+	return task, err
 }
 
 func (s *taskService) CreateTask(task Task) (Task, error) {

@@ -1,42 +1,68 @@
-### Get all tasks
-GET http://localhost:8080/api/v1/tasks/fromBoard/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzcyI6IlRhc2tUcmFja2VyIiwiZXhwIjoxNzYyNzEzMjMyLCJpYXQiOjE3NjI3MDk2MzJ9.-iHyjRHjWi9njYRfTS93y_W7e1vPio-MO7ui1iBvriw
-Accept: application/json
-
-### Get task by id
-GET http://localhost:8080/api/v1/tasks/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzcyI6IlRhc2tUcmFja2VyIiwiZXhwIjoxNzYyNzEzMjMyLCJpYXQiOjE3NjI3MDk2MzJ9.-iHyjRHjWi9njYRfTS93y_W7e1vPio-MO7ui1iBvriw
-Accept: application/json
-
-
-### Create new task
-POST http://localhost:8080/api/v1/tasks
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzcyI6IlRhc2tUcmFja2VyIiwiZXhwIjoxNzYyNzEzMjMyLCJpYXQiOjE3NjI3MDk2MzJ9.-iHyjRHjWi9njYRfTS93y_W7e1vPio-MO7ui1iBvriw
-Content-Type: application/json
-
-{
-  "name": "{{$random.lorem.sentence}}",
-  "description": "this is a test",
-  "boardid": 1
-}
-
+@api = http://localhost:8080/api/v1
 
 ### Create New User and Request JWT Token
-POST http://localhost:8080/api/v1/register
+POST {{api}}/register
 Content-Type: application/json
 
 {
   "username": "Nebuska",
-  "password": "12345678",
+  "password": "12345Neb",
   "email": "furkan.cebar@gmail.com"
 }
-
+> {% client.global.set("token", response.body["Jwt token"]) %}
 
 ###Request JWT Token
 POST http://localhost:8080/api/v1/login
 Content-Type: application/json
 
 {
-  "username": "Nebuska",
-  "password": "123456"
+  "username": "TEST2",
+  "password": "Test12345"
 }
+> {% client.global.set("token", response.body["Jwt token"]) %}
+
+### Get all boards
+GET {{api}}/boards
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get board by id
+GET {{api}}/boards/3
+Authorization: Bearer {{token}}
+
+### Delete Board
+DELETE {{api}}/boards/3
+Authorization: Bearer {{token}}
+
+
+### Create new board
+POST {{api}}/boards
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Test {{$random.lorem.word}}"
+}
+
+### Get all tasks
+GET {{api}}/tasks/fromBoard/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get task by id
+GET {{api}}/tasks/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Create new task
+POST {{api}}/tasks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "{{$random.lorem.sentence}}",
+  "description": "this is a test",
+  "boardid": 3
+}
+
+

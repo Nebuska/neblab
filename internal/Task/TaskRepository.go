@@ -28,7 +28,7 @@ func NewTaskRepository(db *gorm.DB) Repository {
 func (repo *taskRepository) UserHasAccessToBoard(userID, boardID uint) (bool, error) {
 	var count int64
 	err := repo.DB.Table("board_users").
-		Where("boardId = ? AND user_id = ?", boardID, userID).
+		Where("board_id = ? AND user_id = ?", boardID, userID).
 		Count(&count).Error
 	return count > 0, err
 }

@@ -19,7 +19,7 @@ func NewTaskHandler(service Task.Service) *Handler {
 
 func (h *Handler) GetTasks(context *gin.Context) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	boardId, _ := strconv.ParseUint(context.Param("Id"), 10, 64)
+	boardId, _ := strconv.ParseUint(context.Param("id"), 10, 64)
 	tasks, err := h.service.GetTasksByBoardUsingUser(claims.UserId, uint(boardId))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, err.Error())
@@ -30,7 +30,7 @@ func (h *Handler) GetTasks(context *gin.Context) {
 
 func (h *Handler) GetTask(context *gin.Context) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	taskId, _ := strconv.ParseUint(context.Param("Id"), 10, 64)
+	taskId, _ := strconv.ParseUint(context.Param("id"), 10, 64)
 	tasks, err := h.service.GetTaskByIdUsingUser(claims.UserId, uint(taskId))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, err.Error())

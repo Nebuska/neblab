@@ -31,7 +31,7 @@ func LoadConfig() (*Config, error) {
 			"@tcp(127.0.0.1:3306)/" +
 			os.Getenv("DB_NAME") +
 			"?charset=utf8mb4&parseTime=True&loc=Local",
-		JWTSecret: "TEST123",
+		JWTSecret: "THISISTHESECRET",
 		JWTExpire: time.Hour,
 	}, nil
 }
