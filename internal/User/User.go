@@ -14,5 +14,5 @@ type User struct {
 
 	Email string `gorm:"unique;not null" validate:"required,email"`
 
-	BoardUser BoardUser.BoardUser `gorm:"foreignKey:UserID"`
+	BoardUser BoardUser.BoardUser `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE"`
 }
