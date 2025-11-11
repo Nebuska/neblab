@@ -42,7 +42,7 @@ func (repo *boardRepository) GetUsersBoards(userID uint) ([]Board, error) {
 	var boards []Board
 	err := repo.DB.Preload("Tasks").
 		Joins("JOIN board_users ON board_users.board_id = boards.id").
-		Where("board_users.user_id = ?").Find(&boards).Error
+		Where("board_users.user_id = ?", userID).Find(&boards).Error
 	return boards, appError.FromGormError(err)
 }
 

@@ -17,7 +17,7 @@ type Config struct {
 	JWTExpire                time.Duration
 }
 
-func LoadConfig() (*Config, error) {
+func NewConfig() (*Config, error) {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file " + err.Error())

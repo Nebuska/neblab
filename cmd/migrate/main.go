@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	cfg, err := config.LoadConfig()
+	cfg, err := config.NewConfig()
 	if err != nil {
 		log.Fatal("Error loading .env file " + err.Error())
 	}
@@ -35,11 +35,11 @@ func main() {
 	}
 	log.Println("Database migration succeeded")
 	log.Println("Database seeding started")
-	Seed(db, cfg)
+	Seed(db)
 	log.Println("Database seeding succeeded")
 }
 
-func Seed(db *gorm.DB, cfg *config.Config) {
+func Seed(db *gorm.DB) {
 	password, _ := bcrypt.GenerateFromPassword([]byte("Test12345"), bcrypt.DefaultCost)
 	Creds := []Auth.UserCredentials{
 		{
