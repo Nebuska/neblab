@@ -2,6 +2,7 @@ package Auth
 
 import (
 	"task-tracker/internal/User"
+	"task-tracker/pkg/appError"
 
 	"gorm.io/gorm"
 )
@@ -20,7 +21,6 @@ func NewAuthRepository(db *gorm.DB) Repository {
 }
 
 func (repo authRepository) Register(username, email, password string) (UserCredentials, error) {
-	//TODO implement me
 	user := UserCredentials{
 		Username: username,
 		Password: password,
@@ -28,12 +28,12 @@ func (repo authRepository) Register(username, email, password string) (UserCrede
 			Email: email,
 		},
 	}
-
-	return user, repo.db.Create(&user).Error
+	err := repo.db.Create(&user).Error
+	return user, appError.FromGormError(err)
 }
 
 func (repo authRepository) GetCredentials(username string) (UserCredentials, error) {
 	var user UserCredentials
-	repo.db.Where("username = ?", username).First(&user)
-	return user, repo.db.Error
+	err := repo.db.Where("username = ?", username).First(&user).Error
+	return user, appError.FromGormError(err)
 }

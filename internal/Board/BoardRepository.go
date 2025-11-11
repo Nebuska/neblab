@@ -2,6 +2,7 @@ package Board
 
 import (
 	"task-tracker/internal/BoardUser"
+	"task-tracker/pkg/appError"
 
 	"gorm.io/gorm"
 )
@@ -25,18 +26,16 @@ func newBoardRepository(db *gorm.DB) Repository {
 
 func (repo *boardRepository) UserHasAccessToBoard(userID, boardID uint) (bool, error) {
 	var count int64
-	println(userID, boardID)
 	err := repo.DB.Table("board_users").
 		Where("board_id = ? AND user_id = ?", boardID, userID).
 		Count(&count).Error
-	println(count)
-	return count > 0, err
+	return count > 0, appError.FromGormError(err)
 }
 
 func (repo *boardRepository) GetBoard(id uint) (Board, error) {
 	var board Board
 	err := repo.DB.Preload("Tasks").First(&board, id).Error
-	return board, err
+	return board, appError.FromGormError(err)
 }
 
 func (repo *boardRepository) GetUsersBoards(userID uint) ([]Board, error) {
@@ -44,28 +43,29 @@ func (repo *boardRepository) GetUsersBoards(userID uint) ([]Board, error) {
 	err := repo.DB.Preload("Tasks").
 		Joins("JOIN board_users ON board_users.board_id = boards.id").
 		Where("board_users.user_id = ?").Find(&boards).Error
-	return boards, err
+	return boards, appError.FromGormError(err)
 }
 
 func (repo *boardRepository) CreateBoard(OwnerId uint, board Board) (Board, error) {
 	err := repo.DB.Create(&board).Error
 	if err != nil {
-		repo.DB.Delete(&board)
-		return Board{}, err
+		repo.DB.Delete(&board) //todo : it might not exist and it should hard delete
+		return Board{}, appError.FromGormError(err)
 	}
 	err = repo.DB.Create(&BoardUser.BoardUser{
 		UserID:  OwnerId,
 		BoardID: board.ID,
 		Role:    "",
 	}).Error
-	return board, err
+	return board, appError.FromGormError(err)
 }
 
 func (repo *boardRepository) UpdateBoard(board Board) (Board, error) {
 	err := repo.DB.Save(&board).Error
-	return board, err
+	return board, appError.FromGormError(err)
 }
 
 func (repo *boardRepository) DeleteBoard(boardID uint) error {
-	return repo.DB.Delete(&Board{}, boardID).Error
+	err := repo.DB.Delete(&Board{}, boardID).Error
+	return appError.FromGormError(err)
 }

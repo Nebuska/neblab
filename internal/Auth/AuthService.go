@@ -1,6 +1,8 @@
 package Auth
 
 import (
+	"task-tracker/pkg/appError"
+	"task-tracker/pkg/appError/errorCodes"
 	"task-tracker/pkg/jwtAuth"
 
 	"golang.org/x/crypto/bcrypt"
@@ -20,29 +22,36 @@ func NewAuthService(repo Repository, jwt *jwtAuth.JWTManager) Service {
 	return &authService{repo: repo, jwt: jwt}
 }
 
-func (service *authService) Register(username, email, password string) (token jwtAuth.JWTToken, err error) {
+func (service *authService) Register(username, email, password string) (jwtAuth.JWTToken, error) {
 	passHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		return
+		return "", appError.New(errorCodes.InternalError, "bcrypt", err.Error())
 	}
 	credentials, err := service.repo.Register(username, email, string(passHash))
 	if err != nil {
-		return
+		return "", err
+	}
+	token, err := service.jwt.Generate(credentials.ID)
+	if err != nil {
+		return "", appError.New(errorCodes.InternalError, "jwt", err.Error())
 	}
 
-	return service.jwt.Generate(credentials.ID)
+	return token, nil
 }
 
-func (service *authService) Login(username, password string) (token jwtAuth.JWTToken, err error) {
+func (service *authService) Login(username, password string) (jwtAuth.JWTToken, error) {
 	userCredentials, err := service.repo.GetCredentials(username)
 	if err != nil {
-		return
+		return "", err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(userCredentials.Password), []byte(password))
 	if err != nil {
-		return
+		return "", appError.New(errorCodes.InternalError, "bcrypt", err.Error())
 	}
-
-	return service.jwt.Generate(userCredentials.ID)
+	token, err := service.jwt.Generate(userCredentials.ID)
+	if err != nil {
+		return "", appError.New(errorCodes.InternalError, "jwt", err.Error())
+	}
+	return token, nil
 }

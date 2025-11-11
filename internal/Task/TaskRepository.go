@@ -1,7 +1,7 @@
 package Task
 
 import (
-	"task-tracker/internal/common"
+	"task-tracker/pkg/appError"
 
 	"gorm.io/gorm"
 )
@@ -14,14 +14,12 @@ type Repository interface {
 }
 
 type taskRepository struct {
-	common.Repository[Task]
+	DB *gorm.DB
 }
 
 func NewTaskRepository(db *gorm.DB) Repository {
 	return &taskRepository{
-		Repository: common.Repository[Task]{
-			DB: db,
-		},
+		DB: db,
 	}
 }
 
@@ -30,24 +28,24 @@ func (repo *taskRepository) UserHasAccessToBoard(userID, boardID uint) (bool, er
 	err := repo.DB.Table("board_users").
 		Where("board_id = ? AND user_id = ?", boardID, userID).
 		Count(&count).Error
-	return count > 0, err
+	return count > 0, appError.FromGormError(err)
 }
 
 func (repo *taskRepository) CreateTask(task Task) (Task, error) {
 	err := repo.DB.Create(&task).Error
-	return task, err
+	return task, appError.FromGormError(err)
 }
 
 func (repo *taskRepository) GetTasksByBoard(boardId uint) ([]Task, error) {
 	var tasks []Task
 	err := repo.DB.
 		Where("board_id = ?", boardId).Find(&tasks).Error
-	return tasks, err
+	return tasks, appError.FromGormError(err)
 }
 
 func (repo *taskRepository) GetTaskById(taskId uint) (Task, error) {
 	task := Task{Model: gorm.Model{ID: taskId}}
 	err := repo.DB.
 		Where("tasks.id = ?", taskId).First(&task).Error
-	return task, err
+	return task, appError.FromGormError(err)
 }

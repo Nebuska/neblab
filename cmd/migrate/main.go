@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file " + err.Error())
 	}
-	db, err := database.NewMySql(nil, cfg)
+	db, err := database.NewMySql(nil, cfg, nil)
 	if err != nil {
 		log.Fatal("Error starting database connection " + err.Error())
 	}
