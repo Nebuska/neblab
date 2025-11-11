@@ -1,8 +1,8 @@
-package Board
+package aBoard
 
 import (
-	"task-tracker/pkg/appError"
-	"task-tracker/pkg/appError/errorCodes"
+	"github.com/Nebuska/task-tracker/pkg/appError"
+	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 )
 
 type Service interface {

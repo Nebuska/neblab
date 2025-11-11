@@ -1,20 +1,20 @@
 package base
 
 import (
+	"github.com/Nebuska/task-tracker/api/v1/base/dto"
+	"github.com/Nebuska/task-tracker/internal/aAuth"
+	"github.com/Nebuska/task-tracker/pkg/appError"
+	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 	"net/http"
-	"task-tracker/api/v1/base/dto"
-	"task-tracker/internal/Auth"
-	"task-tracker/pkg/appError"
-	"task-tracker/pkg/appError/errorCodes"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AuthHandler struct {
-	service Auth.Service
+	service aAuth.Service
 }
 
-func NewAuthHandler(service Auth.Service) *AuthHandler {
+func NewAuthHandler(service aAuth.Service) *AuthHandler {
 	return &AuthHandler{service: service}
 }
 

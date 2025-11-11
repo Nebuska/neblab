@@ -1,4 +1,4 @@
-package BoardUser
+package aBoardUser
 
 import "gorm.io/gorm"
 

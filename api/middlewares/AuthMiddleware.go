@@ -1,9 +1,9 @@
 package middlewares
 
 import (
+	"github.com/Nebuska/task-tracker/pkg/jwtAuth"
 	"net/http"
 	"strings"
-	"task-tracker/pkg/jwtAuth"
 
 	"github.com/gin-gonic/gin"
 )

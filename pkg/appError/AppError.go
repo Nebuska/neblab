@@ -2,7 +2,7 @@ package appError
 
 import (
 	"errors"
-	"task-tracker/pkg/appError/errorCodes"
+	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 
 	"gorm.io/gorm"
 )

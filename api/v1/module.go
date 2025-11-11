@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"task-tracker/api/v1/base"
-	"task-tracker/api/v1/board"
-	"task-tracker/api/v1/task"
+	"github.com/Nebuska/task-tracker/api/v1/base"
+	"github.com/Nebuska/task-tracker/api/v1/board"
+	"github.com/Nebuska/task-tracker/api/v1/task"
 
 	"go.uber.org/fx"
 )

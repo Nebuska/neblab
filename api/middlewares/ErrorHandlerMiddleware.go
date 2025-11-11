@@ -2,9 +2,9 @@ package middlewares
 
 import (
 	"errors"
+	"github.com/Nebuska/task-tracker/pkg/appError"
+	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 	"net/http"
-	"task-tracker/pkg/appError"
-	"task-tracker/pkg/appError/errorCodes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"

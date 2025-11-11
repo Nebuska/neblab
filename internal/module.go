@@ -1,15 +1,15 @@
 package internal
 
 import (
-	"task-tracker/internal/Auth"
-	"task-tracker/internal/Board"
-	"task-tracker/internal/Task"
+	"github.com/Nebuska/task-tracker/internal/aAuth"
+	"github.com/Nebuska/task-tracker/internal/aBoard"
+	"github.com/Nebuska/task-tracker/internal/aTask"
 
 	"go.uber.org/fx"
 )
 
 var Module = fx.Options(
-	Task.Module,
-	Board.Module,
-	Auth.Module,
+	aTask.Module,
+	aBoard.Module,
+	aAuth.Module,
 )

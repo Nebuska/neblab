@@ -1,9 +1,9 @@
-package Auth
+package aAuth
 
 import (
-	"task-tracker/pkg/appError"
-	"task-tracker/pkg/appError/errorCodes"
-	"task-tracker/pkg/jwtAuth"
+	"github.com/Nebuska/task-tracker/pkg/appError"
+	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
+	"github.com/Nebuska/task-tracker/pkg/jwtAuth"
 
 	"golang.org/x/crypto/bcrypt"
 )

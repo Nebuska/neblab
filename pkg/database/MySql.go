@@ -2,9 +2,9 @@ package database
 
 import (
 	"context"
+	"github.com/Nebuska/task-tracker/config"
+	"github.com/Nebuska/task-tracker/pkg/logger"
 	"log"
-	"task-tracker/config"
-	"task-tracker/pkg/logger"
 
 	"go.uber.org/fx"
 	"gorm.io/driver/mysql"

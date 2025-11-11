@@ -1,7 +1,7 @@
-package Task
+package aTask
 
 import (
-	"task-tracker/pkg/appError"
+	"github.com/Nebuska/task-tracker/pkg/appError"
 
 	"gorm.io/gorm"
 )

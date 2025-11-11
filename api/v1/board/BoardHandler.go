@@ -1,21 +1,21 @@
 package board
 
 import (
+	"github.com/Nebuska/task-tracker/internal/aBoard"
+	"github.com/Nebuska/task-tracker/pkg/appError"
+	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
+	"github.com/Nebuska/task-tracker/pkg/jwtAuth"
 	"net/http"
 	"strconv"
-	"task-tracker/internal/Board"
-	"task-tracker/pkg/appError"
-	"task-tracker/pkg/appError/errorCodes"
-	"task-tracker/pkg/jwtAuth"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
-	service Board.Service
+	service aBoard.Service
 }
 
-func NewBoardHandler(service Board.Service) *Handler {
+func NewBoardHandler(service aBoard.Service) *Handler {
 	return &Handler{service: service}
 
 }
@@ -36,7 +36,7 @@ func (h Handler) GetBoard(context *gin.Context) {
 
 func (h Handler) CreateBoard(context *gin.Context) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	var board Board.Board
+	var board aBoard.Board
 	if err := context.ShouldBindJSON(&board); err != nil {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "BoardHandler", err.Error()))
 		return

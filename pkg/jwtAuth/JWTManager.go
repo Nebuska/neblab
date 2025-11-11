@@ -1,7 +1,7 @@
 package jwtAuth
 
 import (
-	"task-tracker/config"
+	"github.com/Nebuska/task-tracker/config"
 	"time"
 )
 import "github.com/golang-jwt/jwt/v5"

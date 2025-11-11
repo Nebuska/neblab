@@ -1,8 +1,8 @@
 package task
 
 import (
-	"task-tracker/api/middlewares"
-	"task-tracker/pkg/jwtAuth"
+	"github.com/Nebuska/task-tracker/api/middlewares"
+	"github.com/Nebuska/task-tracker/pkg/jwtAuth"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"

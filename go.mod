@@ -1,4 +1,4 @@
-module task-tracker
+module github.com/Nebuska/task-tracker
 
 go 1.25
 

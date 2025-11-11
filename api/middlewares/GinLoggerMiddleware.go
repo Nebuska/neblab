@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"task-tracker/pkg/logger"
+	"github.com/Nebuska/task-tracker/pkg/logger"
 	"time"
 
 	"github.com/gin-gonic/gin"

@@ -22,7 +22,7 @@ func NewConfig() (*Config, error) {
 		log.Fatal("Error loading .env file " + err.Error())
 	}
 
-	duration, err := time.ParseDuration(os.Getenv("JWT_EXPIRE"))
+	duration, err := time.ParseDuration(os.Getenv("JWT_EXPIRES"))
 	if err != nil {
 		return nil, err
 	}

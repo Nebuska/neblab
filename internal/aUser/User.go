@@ -1,7 +1,7 @@
-package User
+package aUser
 
 import (
-	"task-tracker/internal/BoardUser"
+	"github.com/Nebuska/task-tracker/internal/aBoardUser"
 
 	"gorm.io/gorm"
 )
@@ -14,5 +14,5 @@ type User struct {
 
 	Email string `gorm:"unique;not null" validate:"required,email"`
 
-	BoardUser BoardUser.BoardUser `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE"`
+	BoardUser aBoardUser.BoardUser `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE"`
 }
