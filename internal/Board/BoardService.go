@@ -1,6 +1,9 @@
 package Board
 
-import "errors"
+import (
+	"task-tracker/pkg/appError"
+	"task-tracker/pkg/appError/errorCodes"
+)
 
 type Service interface {
 	CreateBoardUsingUser(userId uint, board Board) (Board, error)
@@ -27,7 +30,9 @@ func (s *boardService) GetBoardUsingUser(userId uint, boardId uint) (Board, erro
 		return Board{}, err
 	}
 	if !hasAccess {
-		return Board{}, errors.New("user does not have access to board")
+		return Board{}, appError.New(errorCodes.Forbidden,
+			"BoardService",
+			"user does not have access to board")
 	}
 	return s.repo.GetBoard(boardId)
 }
@@ -42,7 +47,9 @@ func (s *boardService) DeleteBoardUsingUser(userId uint, boardId uint) error {
 		return err
 	}
 	if !hasAccess {
-		return errors.New("user does not have access to board")
+		return appError.New(errorCodes.Forbidden,
+			"BoardService",
+			"user does not have access to board")
 	}
 	return s.repo.DeleteBoard(boardId)
 }

@@ -4,14 +4,17 @@ import (
 	"context"
 	"log"
 	"task-tracker/config"
+	"task-tracker/pkg/logger"
 
 	"go.uber.org/fx"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func NewMySql(lc fx.Lifecycle, cfg *config.Config) (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open(cfg.DatabaseConnectionString), &gorm.Config{})
+func NewMySql(lc fx.Lifecycle, cfg *config.Config, logger *logger.GormLogger) (*gorm.DB, error) {
+	db, err := gorm.Open(mysql.Open(cfg.DatabaseConnectionString), &gorm.Config{
+		Logger: logger,
+	})
 	if err != nil {
 		log.Fatal("Error while connecting to database: " + err.Error())
 	}

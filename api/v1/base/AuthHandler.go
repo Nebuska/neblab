@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"task-tracker/api/v1/base/dto"
 	"task-tracker/internal/Auth"
+	"task-tracker/pkg/appError"
+	"task-tracker/pkg/appError/errorCodes"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 type AuthHandler struct {
@@ -20,16 +21,7 @@ func NewAuthHandler(service Auth.Service) *AuthHandler {
 func (handler *AuthHandler) Register(context *gin.Context) {
 	var registerData dto.RegisterDTO
 	if err := context.ShouldBind(&registerData); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"error": "invalid request body",
-		})
-		return
-	}
-	err := validator.New().Struct(&registerData)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		_ = context.Error(appError.New(errorCodes.BadRequest, "AuthHandler", err.Error()))
 		return
 	}
 
@@ -38,9 +30,7 @@ func (handler *AuthHandler) Register(context *gin.Context) {
 		registerData.Email,
 		registerData.Password)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		_ = context.Error(err)
 		return
 	}
 	context.Header("Authorization", string("Bearer "+token))
@@ -52,16 +42,12 @@ func (handler *AuthHandler) Register(context *gin.Context) {
 func (handler *AuthHandler) Login(context *gin.Context) {
 	var LoginData dto.LoginDTO
 	if err := context.ShouldBind(&LoginData); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"error": "invalid request body",
-		})
+		_ = context.Error(appError.New(errorCodes.BadRequest, "AuthHandler", err.Error()))
 		return
 	}
 	token, err := handler.service.Login(LoginData.Username, LoginData.Password)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		_ = context.Error(err)
 	}
 	context.Header("Authorization", string("Bearer "+token))
 	context.JSON(http.StatusOK, gin.H{

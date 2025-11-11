@@ -1,7 +1,8 @@
 package Task
 
 import (
-	"errors"
+	"task-tracker/pkg/appError"
+	"task-tracker/pkg/appError/errorCodes"
 )
 
 type Service interface {
@@ -24,7 +25,9 @@ func (s *taskService) CreateTaskUsingUser(userId uint, task Task) (Task, error) 
 		return Task{}, err
 	}
 	if !hasAccess {
-		return Task{}, errors.New("user does not have access to task's board")
+		return Task{}, appError.New(errorCodes.Forbidden,
+			"TaskService",
+			"user does not have access to task's board")
 	}
 	return s.repo.CreateTask(task)
 }
@@ -35,7 +38,9 @@ func (s *taskService) GetTasksByBoardUsingUser(userId uint, boardId uint) ([]Tas
 		return nil, err
 	}
 	if !hasAccess {
-		return nil, errors.New("user does not have access to task's board")
+		return nil, appError.New(errorCodes.Forbidden,
+			"TaskService",
+			"user does not have access to task's board")
 	}
 
 	return s.repo.GetTasksByBoard(boardId)
@@ -52,7 +57,9 @@ func (s *taskService) GetTaskByIdUsingUser(userId uint, taskId uint) (Task, erro
 		return Task{}, err
 	}
 	if !hasAccess {
-		return Task{}, errors.New("user does not have access to task's board")
+		return Task{}, appError.New(errorCodes.Forbidden,
+			"TaskService",
+			"user does not have access to task's board")
 	}
 	return task, err
 }

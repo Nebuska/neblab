@@ -6,24 +6,32 @@ import (
 	"log"
 	"net/http"
 	"task-tracker/api"
+	"task-tracker/api/middlewares"
 	"task-tracker/config"
 	"task-tracker/internal"
 	"task-tracker/pkg/database"
 	"task-tracker/pkg/jwtAuth"
+	"task-tracker/pkg/logger"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 )
 
-func NewRouter() *gin.Engine {
-	router := gin.Default()
+func NewRouter(logger *logger.Logger) *gin.Engine {
+	router := gin.New()
+	router.Use(gin.Recovery())
+	router.Use(middlewares.GinLogger(logger))
+	router.Use(middlewares.RequestLogger(logger))
+	router.Use(middlewares.ErrorHandler())
+
 	return router
 }
 
 func main() {
 
 	app := fx.New(
+		logger.Module,
 		fx.Provide(NewRouter),
 		config.Module,
 		database.Module,
