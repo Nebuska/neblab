@@ -1,7 +1,7 @@
-package aAuth
+package auth
 
 import (
-	"github.com/Nebuska/task-tracker/internal/aUser"
+	"github.com/Nebuska/task-tracker/internal/user"
 	"github.com/Nebuska/task-tracker/pkg/appError"
 
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ func (repo authRepository) Register(username, email, password string) (UserCrede
 	user := UserCredentials{
 		Username: username,
 		Password: password,
-		User: aUser.User{
+		User: user.User{
 			Email: email,
 		},
 	}

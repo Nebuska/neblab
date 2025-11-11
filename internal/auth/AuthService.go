@@ -1,4 +1,4 @@
-package aAuth
+package auth
 
 import (
 	"github.com/Nebuska/task-tracker/pkg/appError"

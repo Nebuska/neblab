@@ -1,7 +1,7 @@
 package task
 
 import (
-	"github.com/Nebuska/task-tracker/internal/aTask"
+	"github.com/Nebuska/task-tracker/internal/task"
 	"github.com/Nebuska/task-tracker/pkg/appError"
 	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 	"github.com/Nebuska/task-tracker/pkg/jwtAuth"
@@ -12,10 +12,10 @@ import (
 )
 
 type Handler struct {
-	service aTask.Service
+	service task.Service
 }
 
-func NewTaskHandler(service aTask.Service) *Handler {
+func NewTaskHandler(service task.Service) *Handler {
 	return &Handler{service: service}
 }
 
@@ -51,7 +51,7 @@ func (h *Handler) GetTask(context *gin.Context) {
 
 func (h *Handler) CreateTask(context *gin.Context) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	var task aTask.Task
+	var task task.Task
 	if err := context.ShouldBindJSON(&task); err != nil {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "TaskHandler", err.Error()))
 		return

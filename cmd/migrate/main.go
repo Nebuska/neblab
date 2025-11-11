@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/Nebuska/task-tracker/config"
-	"github.com/Nebuska/task-tracker/internal/aAuth"
-	"github.com/Nebuska/task-tracker/internal/aBoard"
-	"github.com/Nebuska/task-tracker/internal/aBoardUser"
-	"github.com/Nebuska/task-tracker/internal/aTask"
-	"github.com/Nebuska/task-tracker/internal/aUser"
+	"github.com/Nebuska/task-tracker/internal/auth"
+	"github.com/Nebuska/task-tracker/internal/board"
+	"github.com/Nebuska/task-tracker/internal/boardUser"
+	"github.com/Nebuska/task-tracker/internal/task"
+	"github.com/Nebuska/task-tracker/internal/user"
 	"github.com/Nebuska/task-tracker/pkg/database"
 	"log"
 
@@ -24,11 +24,11 @@ func main() {
 		log.Fatal("Error starting database connection " + err.Error())
 	}
 	err = db.AutoMigrate(
-		&aAuth.UserCredentials{},
-		&aUser.User{},
-		&aBoard.Board{},
-		&aTask.Task{},
-		&aBoardUser.BoardUser{},
+		&auth.UserCredentials{},
+		&user.User{},
+		&board.Board{},
+		&task.Task{},
+		&boardUser.BoardUser{},
 	)
 	if err != nil {
 		log.Fatal("Error starting database migration " + err.Error())
@@ -41,11 +41,11 @@ func main() {
 
 func Seed(db *gorm.DB) {
 	password, _ := bcrypt.GenerateFromPassword([]byte("Test12345"), bcrypt.DefaultCost)
-	Creds := []aAuth.UserCredentials{
+	Creds := []auth.UserCredentials{
 		{
 			Username: "TEST1",
 			Password: string(password),
-			User: aUser.User{
+			User: user.User{
 				FirstName: "Test 1",
 				LastName:  "User",
 				Email:     "test@test.test",
@@ -54,7 +54,7 @@ func Seed(db *gorm.DB) {
 		{
 			Username: "TEST2",
 			Password: string(password),
-			User: aUser.User{
+			User: user.User{
 				FirstName: "Test 2",
 				LastName:  "User",
 				Email:     "test@test.test",
@@ -62,7 +62,7 @@ func Seed(db *gorm.DB) {
 		},
 	}
 	db.Create(&Creds)
-	Boards := []aBoard.Board{
+	Boards := []board.Board{
 		{
 			Name: "TEST 1 Board",
 		},
@@ -71,7 +71,7 @@ func Seed(db *gorm.DB) {
 		},
 	}
 	db.Create(&Boards)
-	Tasks := []aTask.Task{
+	Tasks := []task.Task{
 		{
 			Name:        "Test Task 1",
 			Description: "Test task description",
@@ -94,7 +94,7 @@ func Seed(db *gorm.DB) {
 		},
 	}
 	db.Create(&Tasks)
-	BoardUsers := []aBoardUser.BoardUser{
+	BoardUsers := []boardUser.BoardUser{
 		{
 			UserID:  Creds[0].ID,
 			BoardID: Boards[0].ID,

@@ -1,7 +1,7 @@
-package aAuth
+package auth
 
 import (
-	"github.com/Nebuska/task-tracker/internal/aUser"
+	"github.com/Nebuska/task-tracker/internal/user"
 
 	"gorm.io/gorm"
 )
@@ -11,5 +11,5 @@ type UserCredentials struct {
 	Username string `gorm:"unique;size:30;not null" validate:"required,min=3,max=30"`
 	Password string `gorm:"not null"`
 
-	User aUser.User `gorm:"foreignKey:ID;references:ID;constraint:OnDelete:CASCADE"`
+	User user.User `gorm:"foreignKey:ID;references:ID;constraint:OnDelete:CASCADE"`
 }

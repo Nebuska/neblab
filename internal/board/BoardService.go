@@ -1,4 +1,4 @@
-package aBoard
+package board
 
 import (
 	"github.com/Nebuska/task-tracker/pkg/appError"

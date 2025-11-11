@@ -1,4 +1,4 @@
-package aBoard
+package board
 
 import (
 	"go.uber.org/fx"

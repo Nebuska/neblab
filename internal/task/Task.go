@@ -1,4 +1,4 @@
-package aTask
+package task
 
 import (
 	_ "github.com/go-playground/validator/v10"

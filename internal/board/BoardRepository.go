@@ -1,7 +1,7 @@
-package aBoard
+package board
 
 import (
-	"github.com/Nebuska/task-tracker/internal/aBoardUser"
+	"github.com/Nebuska/task-tracker/internal/boardUser"
 	"github.com/Nebuska/task-tracker/pkg/appError"
 
 	"gorm.io/gorm"
@@ -52,7 +52,7 @@ func (repo *boardRepository) CreateBoard(OwnerId uint, board Board) (Board, erro
 		repo.DB.Delete(&board) //todo : it might not exist and it should hard delete
 		return Board{}, appError.FromGormError(err)
 	}
-	err = repo.DB.Create(&aBoardUser.BoardUser{
+	err = repo.DB.Create(&boardUser.BoardUser{
 		UserID:  OwnerId,
 		BoardID: board.ID,
 		Role:    "",

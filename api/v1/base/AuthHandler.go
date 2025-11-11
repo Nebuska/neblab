@@ -2,7 +2,7 @@ package base
 
 import (
 	"github.com/Nebuska/task-tracker/api/v1/base/dto"
-	"github.com/Nebuska/task-tracker/internal/aAuth"
+	"github.com/Nebuska/task-tracker/internal/auth"
 	"github.com/Nebuska/task-tracker/pkg/appError"
 	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 	"net/http"
@@ -11,10 +11,10 @@ import (
 )
 
 type AuthHandler struct {
-	service aAuth.Service
+	service auth.Service
 }
 
-func NewAuthHandler(service aAuth.Service) *AuthHandler {
+func NewAuthHandler(service auth.Service) *AuthHandler {
 	return &AuthHandler{service: service}
 }
 
