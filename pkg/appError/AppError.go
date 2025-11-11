@@ -19,10 +19,12 @@ func New(code errorCodes.ErrorCode, source, message string) AppError {
 		Source:    source,
 		Message:   message,
 	}
-
 }
 
-func FromGormError(err error) AppError {
+func FromGormError(err error) error {
+	if err == nil {
+		return nil
+	}
 	appError := AppError{
 		Message: err.Error(),
 		Source:  "GORM",

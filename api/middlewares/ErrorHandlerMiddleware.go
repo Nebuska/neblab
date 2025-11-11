@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"task-tracker/pkg/appError"
 	"task-tracker/pkg/appError/errorCodes"
-	"task-tracker/pkg/logger"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog"
 )
 
 func ErrorHandler() gin.HandlerFunc {
@@ -17,7 +17,7 @@ func ErrorHandler() gin.HandlerFunc {
 			return
 		}
 		//todo handle the error
-		requestLogger := c.MustGet("logger").(logger.Logger)
+		requestLogger := c.MustGet("logger").(zerolog.Logger)
 		var err appError.AppError
 		if errors.As(c.Errors.Last().Err, &err) {
 			switch err.ErrorCode {
