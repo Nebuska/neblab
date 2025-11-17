@@ -1,12 +1,14 @@
 package board
 
 import (
+	"net/http"
+	"strconv"
+
+	"github.com/Nebuska/task-tracker/api/v1/board/dto"
 	"github.com/Nebuska/task-tracker/internal/board"
 	"github.com/Nebuska/task-tracker/pkg/appError"
 	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 	"github.com/Nebuska/task-tracker/pkg/jwtAuth"
-	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,37 +28,32 @@ func (h Handler) GetBoard(context *gin.Context) {
 	if err != nil {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "BoardHandler", err.Error()))
 	}
-	board, err := h.service.GetBoardUsingUser(claims.UserId, uint(boardId))
+	boardModel, err := h.service.GetBoardUsingUser(claims.UserId, uint(boardId))
 	if err != nil {
 		_ = context.Error(err)
 		return
 	}
-	context.JSON(http.StatusOK, board)
+	context.JSON(http.StatusOK, dto.NewBoardRespond(boardModel))
 }
 
-func (h Handler) CreateBoard(context *gin.Context) {
+func (h Handler) CreateBoard(context *gin.Context, requestDTO dto.CreateBoardRequest) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	var board board.Board
-	if err := context.ShouldBindJSON(&board); err != nil {
-		_ = context.Error(appError.New(errorCodes.BadRequest, "BoardHandler", err.Error()))
-		return
-	}
-	board, err := h.service.CreateBoardUsingUser(claims.UserId, board)
+	newBoardModel, err := h.service.CreateBoardUsingUser(claims.UserId, requestDTO.ToModel())
 	if err != nil {
 		_ = context.Error(err)
 		return
 	}
-	context.JSON(http.StatusOK, board)
+	context.JSON(http.StatusOK, dto.NewBoardRespond(newBoardModel))
 }
 
 func (h Handler) GetUserBoards(context *gin.Context) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	boards, err := h.service.GetBoardsUsingUser(claims.UserId)
+	boardsModel, err := h.service.GetBoardsUsingUser(claims.UserId)
 	if err != nil {
 		_ = context.Error(err)
 		return
 	}
-	context.JSON(http.StatusOK, boards)
+	context.JSON(http.StatusOK, dto.NewBoardsRespond(boardsModel))
 }
 
 func (h Handler) DeleteBoard(context *gin.Context) {

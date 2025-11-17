@@ -14,7 +14,7 @@ func RegisterRoutes(engine *gin.Engine, handler *Handler, manager *jwtAuth.JWTMa
 	{
 		router.GET("/fromBoard/:id", handler.GetTasks)
 		router.GET("/:id", handler.GetTask)
-		router.POST("", handler.CreateTask)
+		router.POST("", middlewares.WithBody(handler.CreateTask))
 	}
 }
 
