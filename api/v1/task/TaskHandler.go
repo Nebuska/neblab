@@ -1,12 +1,14 @@
 package task
 
 import (
+	"net/http"
+	"strconv"
+
+	"github.com/Nebuska/task-tracker/api/v1/task/dto"
 	"github.com/Nebuska/task-tracker/internal/task"
 	"github.com/Nebuska/task-tracker/pkg/appError"
 	"github.com/Nebuska/task-tracker/pkg/appError/errorCodes"
 	"github.com/Nebuska/task-tracker/pkg/jwtAuth"
-	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,12 +28,12 @@ func (h *Handler) GetTasks(context *gin.Context) {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "TaskHandler", err.Error()))
 		return
 	}
-	tasks, err := h.service.GetTasksByBoardUsingUser(claims.UserId, uint(boardId))
+	tasksModel, err := h.service.GetTasksByBoardUsingUser(claims.UserId, uint(boardId))
 	if err != nil {
 		_ = context.Error(err)
 		return
 	}
-	context.JSON(http.StatusOK, tasks)
+	context.JSON(http.StatusOK, dto.NewTasksRespond(tasksModel))
 }
 
 func (h *Handler) GetTask(context *gin.Context) {
@@ -41,27 +43,21 @@ func (h *Handler) GetTask(context *gin.Context) {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "TaskHandler", err.Error()))
 		return
 	}
-	tasks, err := h.service.GetTaskByIdUsingUser(claims.UserId, uint(taskId))
+	taskModel, err := h.service.GetTaskByIdUsingUser(claims.UserId, uint(taskId))
 	if err != nil {
 		_ = context.Error(err)
 		return
 	}
-	context.JSON(http.StatusOK, tasks)
+	context.JSON(http.StatusOK, dto.NewTaskRespond(taskModel))
 }
 
-func (h *Handler) CreateTask(context *gin.Context) {
+func (h *Handler) CreateTask(context *gin.Context, requestDto dto.CreateTaskRequest) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	var task task.Task
-	if err := context.ShouldBindJSON(&task); err != nil {
-		_ = context.Error(appError.New(errorCodes.BadRequest, "TaskHandler", err.Error()))
-		return
-	}
-
-	newTask, err := h.service.CreateTaskUsingUser(claims.UserId, task)
+	newTaskModel, err := h.service.CreateTaskUsingUser(claims.UserId, requestDto.ToModel())
 	if err != nil {
 		_ = context.Error(err)
 		return
 	}
 
-	context.JSON(http.StatusCreated, newTask)
+	context.JSON(http.StatusCreated, dto.NewTaskRespond(newTaskModel))
 }
