@@ -23,12 +23,14 @@ func NewTaskHandler(service task.Service) *Handler {
 
 func (h *Handler) GetTasks(context *gin.Context) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	boardId, err := strconv.ParseUint(context.Param("id"), 10, 64)
+
+	var query dto.TaskQuery
+	err := context.ShouldBindQuery(&query)
 	if err != nil {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "TaskHandler", err.Error()))
 		return
 	}
-	tasksModel, err := h.service.GetTasksByBoardUsingUser(claims.UserId, uint(boardId))
+	tasksModel, err := h.service.GetTasksByFilterUsingUser(claims.UserId, query.ToFilter())
 	if err != nil {
 		_ = context.Error(err)
 		return

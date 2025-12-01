@@ -7,7 +7,7 @@ import (
 
 type Service interface {
 	CreateTaskUsingUser(userId uint, task Task) (Task, error)
-	GetTasksByBoardUsingUser(userId uint, boardId uint) ([]Task, error)
+	GetTasksByFilterUsingUser(userId uint, filter Filter) ([]Task, error)
 	GetTaskByIdUsingUser(userID uint, taskId uint) (Task, error)
 }
 
@@ -32,18 +32,17 @@ func (s *taskService) CreateTaskUsingUser(userId uint, task Task) (Task, error) 
 	return s.repo.CreateTask(task)
 }
 
-func (s *taskService) GetTasksByBoardUsingUser(userId uint, boardId uint) ([]Task, error) {
-	hasAccess, err := s.repo.UserHasAccessToBoard(userId, boardId)
-	if err != nil {
-		return nil, err
+func (s *taskService) GetTasksByFilterUsingUser(userId uint, filter Filter) ([]Task, error) {
+	filter.AccessibleByUserId = userId
+	if filter.PageSize == 0 {
+		filter.PageSize = 20
 	}
-	if !hasAccess {
-		return nil, appError.New(errorCodes.Forbidden,
-			"TaskService",
-			"user does not have access to task's board")
+	if filter.SortBy == "" {
+		filter.SortBy = "created_at"
+		filter.ReversedSort = true
 	}
 
-	return s.repo.GetTasksByBoard(boardId)
+	return s.repo.GetTasksByFilter(filter)
 
 }
 

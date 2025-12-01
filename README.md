@@ -117,18 +117,18 @@ By default, the server should start on http://localhost:8080 (or the port you co
 
 ### Endpoints
 
-| Method | Path               | Description                      | Auth Required |
-|--------|--------------------|----------------------------------|---------------|
-| POST   | /api/v1/register   | Create an account                | No            |
-| POST   | /api/v1/login      | Get jwt token for account        | No            |
-| GET    | /api/v1/boards     | List every board user has access | Yes           |
-| GET    | /api/v1/boards/:id | Get the details of a board       | Yes           |
-| POST   | /api/v1/boards     | Create new board                 | Yes           |
-| DELETE | /api/v1/boards/:id | Delete board                     | Yes           |
-| GET    | /api/v1/tasks      | List all tasks                   | Yes           |
-| POST   | /api/v1/tasks      | Create new task                  | Yes           |
-| PUT    | /api/v1/tasks/:id  | Update task                      | Yes           |
-| DELETE | /api/v1/tasks/:id  | Delete task                      | Yes           |
+| Method | Path                   | Description                         | Auth Required |
+|--------|------------------------|-------------------------------------|---------------|
+| POST   | /api/v1/register       | Create an account                   | No            |
+| POST   | /api/v1/login          | Get jwt token for account           | No            |
+| GET    | /api/v1/boards         | List every board user has access    | Yes           |
+| GET    | /api/v1/boards/:id     | Get the details of a board          | Yes           |
+| POST   | /api/v1/boards         | Create new board                    | Yes           |
+| DELETE | /api/v1/boards/:id     | Delete board                        | Yes           |
+| GET    | /api/v1/tasks?:filters | List all tasks according to filters | Yes           |
+| POST   | /api/v1/tasks          | Create new task                     | Yes           |
+| PUT    | /api/v1/tasks/:id      | Update task                         | Yes           |
+| DELETE | /api/v1/tasks/:id      | Delete task                         | Yes           |
 
 ---
 
