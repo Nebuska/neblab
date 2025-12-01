@@ -12,7 +12,7 @@ func RegisterRoutes(engine *gin.Engine, handler *Handler, manager *jwtAuth.JWTMa
 	router := engine.Group("/api/v1/tasks")
 	router.Use(middlewares.AuthMiddleware(manager))
 	{
-		router.GET("/fromBoard/:id", handler.GetTasks)
+		router.GET("", handler.GetTasks)
 		router.GET("/:id", handler.GetTask)
 		router.POST("", middlewares.WithBody(handler.CreateTask))
 	}
