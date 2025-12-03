@@ -94,11 +94,30 @@ HTTP Handler --> Service Layer --> Repository / Database
 
 ### Running the Application
 
-#### Without Docker
+#### With Makefile
+
+Requires Unix Make
+```bash
+    choco install make
+```
+
 ```bash
     make all
 ```
 By default, the server should start on http://localhost:8080 (or the port you configured).
+
+#### With Taskfile
+
+Requires go-task
+
+```bash
+    go install github.com/go-task/task/v3/cmd/task@latest
+```
+
+```bash
+    task run
+```
+
 
 #### With Docker
 
