@@ -28,7 +28,7 @@ func (h Handler) GetBoard(context *gin.Context) {
 	if err != nil {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "BoardHandler", err.Error()))
 	}
-	boardModel, err := h.service.GetBoardUsingUser(claims.UserId, uint(boardId))
+	boardModel, err := h.service.GetBoard(claims.UserId, uint(boardId))
 	if err != nil {
 		_ = context.Error(err)
 		return
@@ -38,7 +38,7 @@ func (h Handler) GetBoard(context *gin.Context) {
 
 func (h Handler) CreateBoard(context *gin.Context, requestDTO dto.CreateBoardRequest) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	newBoardModel, err := h.service.CreateBoardUsingUser(claims.UserId, requestDTO.ToModel())
+	newBoardModel, err := h.service.CreateBoard(claims.UserId, requestDTO.ToModel())
 	if err != nil {
 		_ = context.Error(err)
 		return
@@ -48,7 +48,7 @@ func (h Handler) CreateBoard(context *gin.Context, requestDTO dto.CreateBoardReq
 
 func (h Handler) GetUserBoards(context *gin.Context) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	boardsModel, err := h.service.GetBoardsUsingUser(claims.UserId)
+	boardsModel, err := h.service.GetBoards(claims.UserId)
 	if err != nil {
 		_ = context.Error(err)
 		return
@@ -62,7 +62,7 @@ func (h Handler) DeleteBoard(context *gin.Context) {
 	if err != nil {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "BoardHandler", err.Error()))
 	}
-	err = h.service.DeleteBoardUsingUser(claims.UserId, uint(boardId))
+	err = h.service.DeleteBoard(claims.UserId, uint(boardId))
 	if err != nil {
 		_ = context.Error(err)
 		return

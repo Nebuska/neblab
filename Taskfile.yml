@@ -9,6 +9,9 @@ vars:
 tasks:
   build:
     desc: Builds the Task Tracker app
+    preconditions:
+      - sh: go test ./...
+        msg: "Test failed! Build aborted"
     sources:
       - "**/*.go"
     generates:
@@ -30,3 +33,8 @@ tasks:
       - echo "Cleaning previous build"
       - mkdir -p ./bin
       - rm -rf ./bin/*
+  test:
+    desc: Runs every _test.go files
+    cmds:
+      - echo "Running Tests"
+      - go test  ./...
