@@ -30,7 +30,7 @@ func (h *Handler) GetTasks(context *gin.Context) {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "TaskHandler", err.Error()))
 		return
 	}
-	tasksModel, err := h.service.GetTasksByFilterUsingUser(claims.UserId, query.ToFilter())
+	tasksModel, err := h.service.GetTasksByFilter(claims.UserId, query.ToFilter())
 	if err != nil {
 		_ = context.Error(err)
 		return
@@ -45,7 +45,7 @@ func (h *Handler) GetTask(context *gin.Context) {
 		_ = context.Error(appError.New(errorCodes.BadRequest, "TaskHandler", err.Error()))
 		return
 	}
-	taskModel, err := h.service.GetTaskByIdUsingUser(claims.UserId, uint(taskId))
+	taskModel, err := h.service.GetTaskById(claims.UserId, uint(taskId))
 	if err != nil {
 		_ = context.Error(err)
 		return
@@ -55,7 +55,7 @@ func (h *Handler) GetTask(context *gin.Context) {
 
 func (h *Handler) CreateTask(context *gin.Context, requestDto dto.CreateTaskRequest) {
 	claims := context.MustGet("claims").(*jwtAuth.UserClaims)
-	newTaskModel, err := h.service.CreateTaskUsingUser(claims.UserId, requestDto.ToModel())
+	newTaskModel, err := h.service.CreateTask(claims.UserId, requestDto.ToModel())
 	if err != nil {
 		_ = context.Error(err)
 		return
