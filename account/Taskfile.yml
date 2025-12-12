@@ -1,0 +1,53 @@
+version: 3
+
+vars:
+  NAME: account
+  ROOT: '{{if eq .USER_WORKING_DIR .TASKFILE_DIR}}.{{else}}..{{end}}'
+  BIN: '{{.ROOT}}/bin'
+  SRC: './cmd/server'
+  EXECUTABLE: '{{.BIN}}/{{.NAME}}.exe'
+
+tasks:
+  run:
+    dir: "{{.TASKFILE_DIR}}"
+    desc: Runs the microservice
+    dotenv:
+      - ./.env
+    deps:
+      - ensure-env
+      - build
+    cmds:
+      - "{{.EXECUTABLE}}"
+  ensure-env:
+    dir: "{{.TASKFILE_DIR}}"
+    desc: creates .env file from the example
+    sources:
+      - "./.env.example"
+    generates:
+      - "./.env"
+    cmds:
+      - "cp ./.env.example ./.env"
+  build:
+    dir: "{{.TASKFILE_DIR}}"
+    desc: When any .go file changes runs tests and rebuilds the project
+    preconditions:
+      - sh: "go test ./..."
+        msg: "Test failed! Build aborted"
+    sources:
+      - "**/*.go"
+    generates:
+      - "{{.EXECUTABLE}}"
+    cmds:
+      - task: clean
+      - "go build -o {{.EXECUTABLE}} {{.SRC}}"
+  clean:
+    dir: "{{.TASKFILE_DIR}}"
+    desc: Cleans the bin
+    cmds:
+      - "mkdir -p {{.BIN}}"
+      - "rm -rf {{.EXECUTABLE}}"
+  test:
+    dir: "{{.TASKFILE_DIR}}"
+    desc: Tests the microservice
+    cmds:
+      - "go test ./..."

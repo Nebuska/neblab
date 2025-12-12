@@ -2,4 +2,6 @@
 .task
 bin/
 .env
+*/.env
+go.work
 
