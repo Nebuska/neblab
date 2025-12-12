@@ -1,40 +1,23 @@
 version: 3
 
-vars:
-  APP_NAME: TaskTracker
-  SRC: ./cmd/server
-  BIN: ./bin/{{.APP_NAME}}.exe
-
+includes:
+  account: ./account
+  task-tracker: ./tasker
 
 tasks:
-  build:
-    desc: Builds the Task Tracker app
-    preconditions:
-      - sh: go test ./...
-        msg: "Test failed! Build aborted"
-    sources:
-      - "**/*.go"
-    generates:
-      - "{{.BIN}}"
-    cmds:
-      - task: clean
-      - echo "Building {{.APP_NAME}}"
-      - go build -o {{.BIN}} {{.SRC}}
   run:
-    desc: Runs the Task Tracker app
-    deps:
-      - build
+    desc: Runs all services
     cmds:
-      - echo "Running {{.APP_NAME}}"
-      - "{{.BIN}}"
+      - task: account:run
+      - task: task-tracker:run
   clean:
     desc: Removes previous build bin files
     cmds:
-      - echo "Cleaning previous build"
+      - echo "Cleaning previous build fully"
       - mkdir -p ./bin
       - rm -rf ./bin/*
   test:
     desc: Runs every _test.go files
     cmds:
-      - echo "Running Tests"
-      - go test  ./...
+      - task: account:test
+      - task: task-tracker:test
