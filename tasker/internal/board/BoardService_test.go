@@ -113,8 +113,8 @@ func (m *mockBoardRepository) GetBoard(boardId uint) (Board, error) {
 	return args.Get(0).(Board), args.Error(1)
 }
 
-func (m *mockBoardRepository) GetUsersBoards(userID uint) ([]Board, error) {
-	args := m.Called(userID)
+func (m *mockBoardRepository) GetUsersBoards(userId uint) ([]Board, error) {
+	args := m.Called(userId)
 	return args.Get(0).([]Board), args.Error(1)
 }
 

@@ -38,11 +38,11 @@ func (repo *boardRepository) GetBoard(id uint) (Board, error) {
 	return board, appError.FromGormError(err)
 }
 
-func (repo *boardRepository) GetUsersBoards(userID uint) ([]Board, error) {
+func (repo *boardRepository) GetUsersBoards(userId uint) ([]Board, error) {
 	var boards []Board
 	err := repo.DB.Preload("Tasks").
 		Joins("JOIN board_users ON board_users.board_id = boards.id").
-		Where("board_users.user_id = ?", userID).Find(&boards).Error
+		Where("board_users.user_id = ?", userId).Find(&boards).Error
 	return boards, appError.FromGormError(err)
 }
 
