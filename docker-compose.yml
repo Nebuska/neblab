@@ -9,6 +9,7 @@ services:
     env_file:
       - .env
     environment:
+      DB_DATABASE: ${ACCOUNT_DB_NAME}
       DB_NAME: ${ACCOUNT_DB_NAME}
       DB_USER: ${ACCOUNT_DB_USER}
       DB_PASS: ${ACCOUNT_DB_PASS}
