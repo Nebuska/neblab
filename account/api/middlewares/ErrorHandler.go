@@ -13,7 +13,7 @@ import (
 func ErrorHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
-		if len(c.Errors) > 0 {
+		if len(c.Errors) == 0 {
 			return
 		}
 		requestLogger := c.MustGet("logger").(zerolog.Logger)

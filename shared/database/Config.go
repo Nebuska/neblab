@@ -17,7 +17,7 @@ func NewConfig() *Config {
 		Host:     os.Getenv("DB_HOST"),
 		User:     os.Getenv("DB_USER"),
 		Password: os.Getenv("DB_PASS"),
-		Database: os.Getenv("DB_DATABASE"),
+		Database: os.Getenv("DB_NAME"),
 		Port:     os.Getenv("DB_PORT"),
 	}
 }

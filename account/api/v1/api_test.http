@@ -1,0 +1,22 @@
+@api = http://localhost:8080/api/v1
+
+### ACCOUNTv1: New user register
+POST {{api}}/register
+Content-Type: application/json
+
+{
+  "username": "Nebuska",
+  "password": "12345Neb",
+  "email": "furkan.cebar@gmail.com"
+}
+
+
+###  ACCOUNTv1: Request single use JWT token
+POST {{api}}/jwt
+Content-Type: application/json
+
+{
+  "username": "TEST2",
+  "password": "Test12345"
+}
+> {% client.global.set("token", response.body["Jwt token"]) %}

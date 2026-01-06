@@ -14,6 +14,7 @@ import (
 
 func NewMySql(lc fx.Lifecycle, cfg *database.Config, logger *logger.GormLogger) (*gorm.DB, error) {
 	DSN := newConnectionString(cfg)
+	println("DSN:::::::::::::::::::::::", DSN)
 	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{
 		Logger: logger,
 	})
@@ -47,5 +48,5 @@ func newConnectionString(cfg *database.Config) string {
 		cfg.Host,
 		cfg.Port,
 		cfg.Database,
-		"charset=utf8mb4&parseTime=True&loc=Local")
+		"charset=utf8mb4&parseTime=true&loc=Local")
 }
