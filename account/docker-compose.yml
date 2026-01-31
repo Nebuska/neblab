@@ -1,0 +1,50 @@
+services:
+  account:
+    build:
+      context: .
+      args:
+        PORT: 8080
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-8080}:8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ./migrations:/migrations
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    command:
+      - "-path=/migrations"
+      - "-database=postgres://${DB_USER}:${DB_PASS}@postgres:5432/${DB_NAME}?sslmode=disable"
+      - "up"
+
+  postgres:
+    image: postgres:18.1
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $DB_USER -d $DB_NAME" ]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER:-root}
+      POSTGRES_PASSWORD: ${DB_PASS:-123456}
+      POSTGRES_DB: ${DB_NAME:-account}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql
+
+volumes:
+  pg-data:
