@@ -11,7 +11,7 @@ import (
 	"github.com/Nebuska/neblab/account/api/v1"
 	"github.com/Nebuska/neblab/account/internal/auth"
 	"github.com/Nebuska/neblab/shared/config"
-	"github.com/Nebuska/neblab/shared/database/mysql"
+	"github.com/Nebuska/neblab/shared/database/postgres"
 	"github.com/Nebuska/neblab/shared/jwtAuth"
 	"github.com/Nebuska/neblab/shared/logger"
 	"github.com/gin-gonic/gin"
@@ -57,7 +57,7 @@ func main() {
 	app := fx.New(
 		logger.Module,
 		config.Module,
-		mysql.Module,
+		postgres.Module,
 		jwtAuth.Module,
 		auth.Module,
 
