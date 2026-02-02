@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Nebuska/neblab/account/api"
 	"github.com/Nebuska/neblab/account/api/middlewares"
-	"github.com/Nebuska/neblab/account/api/v1"
 	"github.com/Nebuska/neblab/account/internal/auth"
 	"github.com/Nebuska/neblab/shared/config"
 	"github.com/Nebuska/neblab/shared/database/postgres"
@@ -62,7 +62,7 @@ func main() {
 		auth.Module,
 
 		fx.Provide(NewRouter),
-		v1.Module,
+		api.Module,
 
 		fx.Invoke(GinStarter),
 	)
