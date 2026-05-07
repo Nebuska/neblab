@@ -1,14 +1,23 @@
 package user
 
 import (
+	"github.com/Nebuska/neblab/account/internal/dto"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
 
-	FirstName string `gorm:"size:30" validate:"omitempty,min=3,max=30"`
-	LastName  string `gorm:"size:30" validate:"omitempty,min=3,max=30"`
+	FirstName string
+	LastName  string
 
-	Email string `gorm:"unique;not null" validate:"required,email"`
+	Email string
+}
+
+func FromRegisterDTO(dto dto.RegisterData) User {
+	return User{
+		FirstName: "",
+		LastName:  "",
+		Email:     dto.Email,
+	}
 }
