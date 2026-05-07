@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	apiDto "github.com/Nebuska/neblab/account/api/v1/dto"
-	authDto "github.com/Nebuska/neblab/account/internal/auth/dto"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 )
@@ -30,11 +29,12 @@ func ErrorHandler() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Request's body is faulty",
 			})
-		case errors.Is(err, authDto.ErrEmailAlreadyExists):
-			requestLogger.Warn().Err(err).Send()
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Email already exists",
-			})
+			/* todo: changed dto location and etc
+			case errors.Is(err, authDto.ErrEmailAlreadyExists):
+				requestLogger.Warn().Err(err).Send()
+				c.JSON(http.StatusBadRequest, gin.H{
+					"error": "Email already exists",
+				})*/
 		default:
 			requestLogger.Error().Err(err).Msg("!!! NOT EXPECTED ERROR !!!")
 			c.JSON(http.StatusInternalServerError, gin.H{

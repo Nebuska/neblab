@@ -15,7 +15,8 @@ func NewPostgres(lc fx.Lifecycle, cfg *database.Config, logger *logger.GormLogge
 	dsn := newConnectionString(cfg)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger,
+		Logger:         logger,
+		TranslateError: true,
 	})
 	if err != nil {
 		return nil, err

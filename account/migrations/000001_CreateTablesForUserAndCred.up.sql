@@ -1,11 +1,11 @@
 CREATE TABLE users (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     deleted_at TIMESTAMPTZ,
 
-    first_name VARCHAR(30),
-    last_name  VARCHAR(30),
+    first_name TEXT,
+    last_name  TEXT,
     email      TEXT NOT NULL UNIQUE
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE credentials (
     deleted_at TIMESTAMPTZ,
 
     email    TEXT UNIQUE,
-    username VARCHAR(30) NOT NULL,
+    username TEXT NOT NULL,
     password TEXT NOT NULL,
 
     CONSTRAINT fk_credentials_user

@@ -1,6 +1,7 @@
 package credentials
 
 import (
+	"github.com/Nebuska/neblab/account/internal/dto"
 	"github.com/Nebuska/neblab/account/internal/user"
 
 	"gorm.io/gorm"
@@ -8,9 +9,17 @@ import (
 
 type Credentials struct {
 	gorm.Model
-	Email    string `gorm:"unique"`
-	Username string `gorm:"size:30;not null" validate:"required,min=3,max=30"`
-	Password string `gorm:"not null"`
+	Email    string
+	Username string
+	Password string
 
-	User user.User `gorm:"foreignKey:ID;references:ID;constraint:OnDelete:CASCADE"`
+	User user.User
+}
+
+func FromRegisterDTO(dto dto.RegisterData, hashedPass string) Credentials {
+	return Credentials{
+		Email:    dto.Email,
+		Username: dto.Username,
+		Password: hashedPass,
+	}
 }

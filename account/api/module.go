@@ -7,9 +7,11 @@ import (
 )
 
 func RegisterRoutes(engine *gin.Engine) {
-	router := engine.Group("/api")
+	router := engine.Group("")
 
 	router.GET("/health", health)
+	router.GET("/ready", ready)
+	router.GET("/version", version)
 }
 
 var Module = fx.Options(

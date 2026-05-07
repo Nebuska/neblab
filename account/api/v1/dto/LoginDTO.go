@@ -1,6 +1,8 @@
 package dto
 
-import "github.com/Nebuska/neblab/account/internal/auth/dto"
+import (
+	"github.com/Nebuska/neblab/account/internal/dto"
+)
 
 type LoginDTO struct {
 	Username string `json:"username"`
